@@ -149,10 +149,12 @@ auth_control/
 │   │   │               │   └── security/
 │   │   │               ├── controllers/
 │   │   │               ├── dtos/
+│   │   │               ├── enums/
 │   │   │               ├── exceptions/          
 │   │   │               ├── models/
 │   │   │               ├── repositories/
 │   │   │               └── services/
+│   │   │                   └── impl/
 │   │   └── resources/
 │   │       └── application.properties
 │   └── test/
