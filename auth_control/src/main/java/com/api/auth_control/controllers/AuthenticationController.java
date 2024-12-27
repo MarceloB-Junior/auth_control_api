@@ -3,6 +3,7 @@ package com.api.auth_control.controllers;
 import com.api.auth_control.dtos.LoginDto;
 import com.api.auth_control.dtos.TokenDto;
 import com.api.auth_control.services.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +20,7 @@ public class AuthenticationController {
     final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> authUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> authUser(@RequestBody @Valid LoginDto loginDto) {
         var userAuthToken = new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.password());
         authenticationManager.authenticate(userAuthToken);
         String jwtToken = authenticationService.obtainJwtToken(loginDto);
