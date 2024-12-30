@@ -1,6 +1,7 @@
 package com.api.auth_control.controllers;
 
 import com.api.auth_control.dtos.LoginDto;
+import com.api.auth_control.dtos.RefreshTokenDto;
 import com.api.auth_control.dtos.TokenDto;
 import com.api.auth_control.services.AuthenticationService;
 import jakarta.validation.Valid;
@@ -23,7 +24,12 @@ public class AuthenticationController {
     public ResponseEntity<TokenDto> authUser(@RequestBody @Valid LoginDto loginDto) {
         var userAuthToken = new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.password());
         authenticationManager.authenticate(userAuthToken);
-        String jwtToken = authenticationService.obtainJwtToken(loginDto);
-        return ResponseEntity.ok(new TokenDto(jwtToken, "Login successful."));
+        return ResponseEntity.ok(authenticationService.obtainJwtToken(loginDto));
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<TokenDto> authRefreshToken(@RequestBody @Valid RefreshTokenDto refreshTokenDto){
+        return ResponseEntity.ok(authenticationService
+                .obtainJwtRefreshToken(refreshTokenDto.refreshToken()));
     }
 }

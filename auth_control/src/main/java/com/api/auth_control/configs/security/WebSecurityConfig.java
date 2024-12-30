@@ -31,6 +31,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/admin-role").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/users/user-role").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")

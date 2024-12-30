@@ -1,10 +1,10 @@
 
-# Auth Control API
+## Auth Control API
 
-## Visão Geral
-Auth Control é uma aplicação Spring Boot que fornece um sistema de autenticação e autorização robusto para gerenciar usuários. Com esta API, os usuários podem se registrar, fazer login e receber tokens JWT para autenticação em requisições subsequentes. A aplicação foi projetada para ser escalável e segura, utilizando as melhores práticas de desenvolvimento em Java.
+### Visão Geral
+Auth Control é uma aplicação Spring Boot que fornece um sistema de autenticação e autorização robusto para gerenciar usuários. Com esta API, os usuários podem se registrar, fazer login e receber tokens JWT para autenticação em requisições subsequentes. A aplicação foi projetada para ser escalável e segura, utilizando as melhores práticas de desenvolvimento em Java, incluindo o uso de Spring Security para proteger os endpoints.
 
-## Principais Funcionalidades:
+### Principais Funcionalidades:
 - **Gerenciamento de Usuários**: Permite a criação, leitura e verificação de usuários registrados.
 - **Autenticação Segura**: Utiliza JSON Web Tokens (JWT) para autenticação, garantindo sessões sem estado.
 - **Validação de Dados**: Implementa validação de entrada usando Jakarta Bean Validation.
@@ -59,8 +59,13 @@ Antes de começar, certifique-se de que você atendeu aos seguintes requisitos:
      spring.datasource.url=jdbc:mysql://localhost:3306/auth_control_db
      spring.datasource.username=seu_usuario
      spring.datasource.password=sua_senha
+
      spring.jpa.hibernate.ddl-auto=update
-     auth.jwt.token.secret=auth_control_secret
+     spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+     auth.jwt.token.secret=seu_token_secret
+     auth.jwt.token.expiration=1
+     auth.jwt.refresh.token.expiration=8
      ```
 3. Instale as dependências:
    ```bash
@@ -102,7 +107,7 @@ Resposta:
 ```json
 {
     "token": "seu_token_jwt",
-    "message": "Login successful."
+    "refreshToken": "seu_refresh_token"
 }
 ```
 
@@ -117,6 +122,27 @@ Corpo da Requisição:
     "email": "usuario@example.com"
 }
 ```
+
+### Refresh Token do Usuário
+**POST /auth/refresh-token**
+
+Corpo da Requisição:
+```json
+{
+    "refreshToken": "seu_refresh_token"
+}
+```
+
+Resposta:
+```json
+{
+    "token": "novo_token_jwt",
+    "refreshToken": "novo_refresh_token"
+}
+```
+
+### Obter Todos os Usuários
+**GET /users**
 
 ### Mensagem para Administrador
 **GET /users/admin-role**
@@ -160,3 +186,4 @@ auth_control/
 │   └── test/
 └── pom.xml
 ```
+

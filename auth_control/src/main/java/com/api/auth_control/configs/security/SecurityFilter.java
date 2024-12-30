@@ -10,11 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -31,19 +31,12 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if(jwtToken != null) {
             String login = authenticationService.validateJwtToken(jwtToken);
+            UserModel userModel = userRepository.findByEmail(login)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + login));
 
-            Optional<UserModel> userModel = userRepository.findByEmail(login);
-
-            if(userModel.isPresent()) {
-                var authentication = new UsernamePasswordAuthenticationToken(userModel,
-                        null, userModel.get().getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }else {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                        "Invalid JWT token or user not found");
-                return;
-            }
+            var authentication = new UsernamePasswordAuthenticationToken(userModel,
+                    null, userModel.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request,response);
