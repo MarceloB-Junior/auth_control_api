@@ -49,8 +49,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDto.email()));
 
         return TokenDto.builder()
-                .token(generateJwtToken(userModel,tokenExpirationHour))
+                .accessToken(generateJwtToken(userModel,tokenExpirationHour))
                 .refreshToken(generateJwtToken(userModel,refreshTokenExpirationHour))
+                .expiresAt(generateExpirationDate(tokenExpirationHour))
                 .build();
     }
 
@@ -65,8 +66,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return TokenDto.builder()
-                .token(generateJwtToken(userModel,tokenExpirationHour))
+                .accessToken(generateJwtToken(userModel,tokenExpirationHour))
                 .refreshToken(generateJwtToken(userModel,refreshTokenExpirationHour))
+                .expiresAt(generateExpirationDate(tokenExpirationHour))
                 .build();
     }
 

@@ -1,4 +1,3 @@
-
 ## Auth Control API
 
 ### Visão Geral
@@ -106,8 +105,9 @@ Corpo da Requisição:
 Resposta:
 ```json
 {
-    "token": "seu_token_jwt",
-    "refreshToken": "seu_refresh_token"
+    "accessToken": "seu_token_jwt",
+    "refreshToken": "seu_refresh_token",
+    "expiresAt": "2024-12-30T21:01:49.370814300Z"
 }
 ```
 
@@ -119,6 +119,13 @@ Corpo da Requisição:
 {
     "name": "Nome do Usuário",
     "password": "sua_senha",
+    "email": "usuario@example.com"
+}
+```
+Resposta:
+```json
+{
+    "name": "Nome do Usuário",
     "email": "usuario@example.com"
 }
 ```
@@ -136,8 +143,9 @@ Corpo da Requisição:
 Resposta:
 ```json
 {
-    "token": "novo_token_jwt",
-    "refreshToken": "novo_refresh_token"
+    "accessToken": "novo_token_jwt",
+    "refreshToken": "novo_refresh_token",
+    "expiresAt": "2024-12-31T06:01:49.370814300Z"
 }
 ```
 

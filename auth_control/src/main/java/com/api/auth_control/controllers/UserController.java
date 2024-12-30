@@ -1,5 +1,6 @@
 package com.api.auth_control.controllers;
 
+import com.api.auth_control.dtos.RegisterDto;
 import com.api.auth_control.dtos.UserDto;
 import com.api.auth_control.exceptions.EmailAlreadyInUseException;
 import com.api.auth_control.models.UserModel;
@@ -23,11 +24,11 @@ public class UserController {
     final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> saveUser(@RequestBody @Valid UserDto userDto){
-        if(userService.existsByEmail(userDto.email())){
+    public ResponseEntity<UserDto> saveUser(@RequestBody @Valid RegisterDto registerDto){
+        if(userService.existsByEmail(registerDto.email())){
             throw new EmailAlreadyInUseException("Conflict: this email is already in use!");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(registerDto));
     }
 
     @GetMapping

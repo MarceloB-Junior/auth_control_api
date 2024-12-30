@@ -1,5 +1,6 @@
 package com.api.auth_control.services;
 
+import com.api.auth_control.dtos.RegisterDto;
 import com.api.auth_control.dtos.UserDto;
 import com.api.auth_control.enums.RolesEnum;
 import com.api.auth_control.models.UserModel;
@@ -20,15 +21,15 @@ public class UserService {
     final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserDto save(UserDto userDto) {
+    public UserDto save(RegisterDto registerDto) {
         var userModel = new UserModel();
-        BeanUtils.copyProperties(userDto,userModel);
+        BeanUtils.copyProperties(registerDto,userModel);
 
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
         userModel.setRole(RolesEnum.USER);
         userRepository.save(userModel);
 
-        return userDto;
+        return new UserDto(userModel.getName(),userModel.getEmail());
     }
 
     public boolean existsByEmail(String email){
